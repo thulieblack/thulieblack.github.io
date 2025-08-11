@@ -63,9 +63,9 @@ const computedFields: ComputedFields = {
  * Count the occurrences of all tags across blog posts and write to json file
  */
 async function createTagCount(allBlogs) {
-  const tagCount: Record<string, number> = {}
+  const tagCount = {}
   allBlogs.forEach((file) => {
-    if (file.tags && (!isProduction || file.draft !== true)) {
+    if (file.tags && file.draft !== true) {
       file.tags.forEach((tag) => {
         const formattedTag = slug(tag)
         if (formattedTag in tagCount) {
@@ -76,8 +76,7 @@ async function createTagCount(allBlogs) {
       })
     }
   })
-  const formatted = await prettier.format(JSON.stringify(tagCount, null, 2), { parser: 'json' })
-  writeFileSync('./app/tag-data.json', formatted)
+  writeFileSync('./app/tag-data.json', JSON.stringify(tagCount))
 }
 
 function createSearchIndex(allBlogs) {
@@ -172,9 +171,9 @@ export default makeSource({
           content: icon,
         },
       ],
-      rehypeKatex,
+      [rehypeKatex, { output: 'mathml' }],
       rehypeKatexNoTranslate,
-      [rehypeCitation, { path: path.join(root, 'data') }],
+      [rehypeCitation, { path: path.join(process.cwd(), 'data') }],
       [rehypePrismPlus, { defaultLanguage: 'js', ignoreMissing: true }],
       rehypePresetMinify,
     ],
