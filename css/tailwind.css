@@ -1,0 +1,217 @@
+@import 'tailwindcss';
+@plugin "@tailwindcss/forms";
+@plugin '@tailwindcss/typography';
+@source '../node_modules/pliny';
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Core theme configuration */
+@theme {
+  /* Font families */
+  --font-sans:
+    var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  /* Colors: Primary is gold, gray is black */
+  --color-primary-50: #fffbe6;
+  --color-primary-100: #fff3bf;
+  --color-primary-200: #ffe066;
+  --color-primary-300: #ffd43b;
+  --color-primary-400: #fcc419;
+  --color-primary-500: #fab005; /* main gold */
+  --color-primary-600: #f59f00;
+  --color-primary-700: #f08c00;
+  --color-primary-800: #e67700;
+  --color-primary-900: #d9a100; /* darkest gold */
+  --color-primary-950: #b38600;
+
+  /* Slate colors for backgrounds */
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #36454f; /* charcoal grey */
+  --color-gray-900: #2f3e46; /* darker charcoal grey */
+  --color-gray-950: #232b30; /* darkest charcoal grey */
+
+  /* Line heights */
+  --line-height-11: 2.75rem;
+  --line-height-12: 3rem;
+  --line-height-13: 3.25rem;
+  --line-height-14: 3.5rem;
+
+  /* Z-index values */
+  --z-60: 60;
+  --z-70: 70;
+  --z-80: 80;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+
+  a,
+  button {
+    outline-color: var(--color-primary-500);
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid;
+    border-radius: var(--radius-sm);
+    outline-color: var(--color-primary-500);
+  }
+}
+
+@layer utilities {
+  .prose {
+    & a {
+      color: var(--color-primary-500);
+      &:hover {
+        color: var(--color-primary-600);
+      }
+      & code {
+        color: var(--color-primary-400);
+      }
+    }
+    & :where(h1, h2) {
+      font-weight: 700;
+      letter-spacing: var(--tracking-tight);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    & h3 {
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    & :where(h4, h5, h6) {
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    & :where(code):not(pre code) {
+      color: var(--color-indigo-500);
+    }
+  }
+
+  .prose-invert {
+    & a {
+      color: var(--color-primary-500);
+      &:hover {
+        color: var(--color-primary-400);
+      }
+      & code {
+        color: var(--color-primary-400);
+      }
+    }
+    & :where(h1, h2, h3, h4, h5, h6) {
+      color: var(--color-gray-100);
+    }
+    & :where(h1, h2) {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    & h3 {
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    & :where(h4, h5, h6) {
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+.task-list-item::before {
+  @apply hidden;
+}
+
+.task-list-item {
+  @apply list-none;
+}
+
+.footnotes {
+  @apply mt-12 border-t border-gray-200 pt-8 dark:border-gray-700;
+}
+
+.data-footnote-backref {
+  @apply no-underline;
+}
+
+.csl-entry {
+  @apply my-5;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition:
+    background-color 600000s 0s,
+    color 600000s 0s;
+}
+
+.katex-display {
+  overflow: auto hidden;
+}
+
+.content-header-link {
+  opacity: 0;
+  margin-left: -24px;
+  padding-right: 4px;
+}
+
+.content-header:hover .content-header-link,
+.content-header-link:hover {
+  opacity: 1;
+}
+
+.linkicon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Profile card avatar animations */
+.avatar-hover-glow {
+  position: relative;
+}
+
+.avatar-hover-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #fab005, #845ec2);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: -1;
+  filter: blur(8px);
+}
+
+.avatar-hover-glow:hover::before {
+  opacity: 0.7;
+}

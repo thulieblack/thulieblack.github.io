@@ -1,24 +1,49 @@
-## Getting Started  
+# Thulieblack's Blog
 
-This project is a static website made using HTML. Follow the steps below to run the project locally:  
+A personal blog built with Next.js and Tailwind CSS.
 
-### Steps to Run  
+## About
 
-1. Clone the repository:  
+This is the personal blog of Thulisile Sibanda, sharing thoughts and insights on various topics.
+
+## Tech Stack
+
+- **Framework**: Next.js 15
+- **Styling**: Tailwind CSS
+- **Content**: MDX with Contentlayer
+- **Language**: TypeScript
+- **Deployment**: GitHub Pages
+
+## Getting Started
+
+1. **Install dependencies**
+
    ```bash
-   git clone https://github.com/thulieblack/thulieblack.github.io
+   yarn install
+   ```
 
-2. Open the project folder in VS Code:
-    ```bash
-    cd thulieblack.github.io
+2. **Run development server**
 
-3. Build the static website locally
-    ```bash
-    serve -s build
+   ```bash
+   yarn dev
+   ```
 
-Your website should run locally with no errors, feel free to use this as a template and make changes into it for your own Portfolio.
+3. **Open your browser**
+   Visit [http://localhost:3000](http://localhost:3000)
 
-Feel free to raise issues if you find any bugs in the site.
+## Available Scripts
 
-> Credit: Template originally by [DeveloperFolio](https://github.com/saadpasta/developerFolio)
+- `yarn dev` - Start development server
+- `yarn build` - Build for production
+- `yarn start` - Start production server
+- `yarn lint` - Run ESLint
 
+## Adding Content
+
+- **Blog posts**: Add `.mdx` files to `/data/blog/`
+- **Author info**: Edit `/data/authors/default.mdx`
+- **Site config**: Update `/data/siteMetadata.js`
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
