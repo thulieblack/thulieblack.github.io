@@ -29,9 +29,19 @@ export async function generateMetadata(props: {
 export const generateStaticParams = async () => {
   const tagCounts = tagData as Record<string, number>
   const tagKeys = Object.keys(tagCounts)
-  return tagKeys.map((tag) => ({
-    tag: encodeURI(tag),
-  }))
+  const params: { tag: string; page: string }[] = []
+
+  for (const tag of tagKeys) {
+    // Count posts for this tag
+    const count = allBlogs.filter(
+      (post) => post.tags && post.tags.map((t) => slug(t)).includes(tag)
+    ).length
+    const totalPages = Math.ceil(count / POSTS_PER_PAGE)
+    for (let i = 1; i <= totalPages; i++) {
+      params.push({ tag: encodeURI(tag), page: i.toString() })
+    }
+  }
+  return params
 }
 
 export default async function TagPage(props: { params: Promise<{ tag: string }> }) {
