@@ -44,7 +44,6 @@ const icon = fromHtmlIsomorphic(
 
 const computedFields: ComputedFields = {
   readingTime: { type: 'json', resolve: (doc) => readingTime(doc.body.raw) },
-  wordCount: { type: 'number', resolve: (doc) => doc.body.raw.split(/\s+/gu).length }, // <-- Added
   slug: {
     type: 'string',
     resolve: (doc) => doc._raw.flattenedPath.replace(/^.+?(\/)/, ''),
@@ -60,17 +59,13 @@ const computedFields: ComputedFields = {
   toc: { type: 'json', resolve: (doc) => extractTocHeadings(doc.body.raw) },
 }
 
-function filterDrafts(allBlogs) {
-  return isProduction ? allBlogs.filter((post) => !post.draft) : allBlogs
-}
-
 /**
  * Count the occurrences of all tags across blog posts and write to json file
  */
 async function createTagCount(allBlogs) {
-  const tagCount = {}
-  filterDrafts(allBlogs).forEach((file) => {
-    if (file.tags) {
+  const tagCount: Record<string, number> = {}
+  allBlogs.forEach((file) => {
+    if (file.tags && (!isProduction || file.draft !== true)) {
       file.tags.forEach((tag) => {
         const formattedTag = slug(tag)
         if (formattedTag in tagCount) {
@@ -81,28 +76,18 @@ async function createTagCount(allBlogs) {
       })
     }
   })
-  // Format JSON with proper spacing for better readability in git
-  const formattedJson = JSON.stringify(tagCount, null, 2)
-  writeFileSync('./app/tag-data.json', formattedJson)
-  console.log('Tag data generated with', Object.keys(tagCount).length, 'tags')
+  const formatted = await prettier.format(JSON.stringify(tagCount, null, 2), { parser: 'json' })
+  writeFileSync('./app/tag-data.json', formatted)
 }
 
 function createSearchIndex(allBlogs) {
-  if (siteMetadata?.search?.provider === 'algolia' || siteMetadata.search?.provider === 'kbar') {
+  if (
+    siteMetadata?.search?.provider === 'kbar' &&
+    siteMetadata.search.kbarConfig.searchDocumentsPath
+  ) {
     writeFileSync(
-      `public/search.json`,
-      JSON.stringify(
-        filterDrafts(allBlogs).map((post) => ({
-          title: post.title,
-          summary: post.summary,
-          content: post.body.raw,
-          objectID: post._id,
-          slug: post.slug,
-          url: `/blog/${post.slug}`, // <-- Add this line
-          tags: post.tags || [],
-          date: post.date,
-        }))
-      )
+      `public/${path.basename(siteMetadata.search.kbarConfig.searchDocumentsPath)}`,
+      JSON.stringify(allCoreContent(sortPosts(allBlogs)))
     )
     console.log('Local search index generated...')
   }
@@ -116,8 +101,6 @@ export const Blog = defineDocumentType(() => ({
     title: { type: 'string', required: true },
     date: { type: 'date', required: true },
     tags: { type: 'list', of: { type: 'string' }, default: [] },
-    categories: { type: 'list', of: { type: 'string' }, default: [] }, // <-- Added
-    excerpt: { type: 'string' }, // <-- Added
     lastmod: { type: 'date' },
     draft: { type: 'boolean' },
     summary: { type: 'string' },
@@ -189,16 +172,16 @@ export default makeSource({
           content: icon,
         },
       ],
-      [rehypeKatex, { output: 'mathml' }],
+      rehypeKatex,
       rehypeKatexNoTranslate,
-      [rehypeCitation, { path: path.join(process.cwd(), 'data') }],
+      [rehypeCitation, { path: path.join(root, 'data') }],
       [rehypePrismPlus, { defaultLanguage: 'js', ignoreMissing: true }],
       rehypePresetMinify,
     ],
   },
   onSuccess: async (importData) => {
     const { allBlogs } = await importData()
-    await createTagCount(allBlogs)
+    createTagCount(allBlogs)
     createSearchIndex(allBlogs)
   },
 })
