@@ -44,6 +44,7 @@ const icon = fromHtmlIsomorphic(
 
 const computedFields: ComputedFields = {
   readingTime: { type: 'json', resolve: (doc) => readingTime(doc.body.raw) },
+  wordCount: { type: 'number', resolve: (doc) => doc.body.raw.split(/\s+/gu).length }, // <-- Added
   slug: {
     type: 'string',
     resolve: (doc) => doc._raw.flattenedPath.replace(/^.+?(\/)/, ''),
@@ -59,13 +60,17 @@ const computedFields: ComputedFields = {
   toc: { type: 'json', resolve: (doc) => extractTocHeadings(doc.body.raw) },
 }
 
+function filterDrafts(allBlogs) {
+  return isProduction ? allBlogs.filter((post) => !post.draft) : allBlogs
+}
+
 /**
  * Count the occurrences of all tags across blog posts and write to json file
  */
 async function createTagCount(allBlogs) {
   const tagCount = {}
-  allBlogs.forEach((file) => {
-    if (file.tags && file.draft !== true) {
+  filterDrafts(allBlogs).forEach((file) => {
+    if (file.tags) {
       file.tags.forEach((tag) => {
         const formattedTag = slug(tag)
         if (formattedTag in tagCount) {
@@ -76,7 +81,6 @@ async function createTagCount(allBlogs) {
       })
     }
   })
-
   // Format JSON with proper spacing for better readability in git
   const formattedJson = JSON.stringify(tagCount, null, 2)
   writeFileSync('./app/tag-data.json', formattedJson)
@@ -88,13 +92,15 @@ function createSearchIndex(allBlogs) {
     writeFileSync(
       `public/search.json`,
       JSON.stringify(
-        allBlogs.map((post) => ({
+        filterDrafts(allBlogs).map((post) => ({
           title: post.title,
           summary: post.summary,
           content: post.body.raw,
           objectID: post._id,
           slug: post.slug,
+          url: `/blog/${post.slug}`, // <-- Add this line
           tags: post.tags || [],
+          date: post.date,
         }))
       )
     )
@@ -110,6 +116,8 @@ export const Blog = defineDocumentType(() => ({
     title: { type: 'string', required: true },
     date: { type: 'date', required: true },
     tags: { type: 'list', of: { type: 'string' }, default: [] },
+    categories: { type: 'list', of: { type: 'string' }, default: [] }, // <-- Added
+    excerpt: { type: 'string' }, // <-- Added
     lastmod: { type: 'date' },
     draft: { type: 'boolean' },
     summary: { type: 'string' },
