@@ -1,67 +1,50 @@
 import { slug } from 'github-slugger'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
+import siteMetadata from '@/data/siteMetadata'
 import ListLayout from '@/layouts/ListLayoutWithTags'
 import { allBlogs } from 'contentlayer/generated'
 import tagData from 'app/tag-data.json'
-import { notFound } from 'next/navigation'
+import { genPageMetadata } from 'app/seo'
+import { Metadata } from 'next'
 
 const POSTS_PER_PAGE = 5
 
-export async function generateStaticParams() {
-  try {
-    const tagCounts = tagData as Record<string, number>
-    const params: { tag: string; page: string }[] = []
-
-    if (!tagCounts || Object.keys(tagCounts).length === 0) {
-      console.warn('No tag data found. Returning empty array.')
-      return []
-    }
-
-    Object.keys(tagCounts).forEach((tag) => {
-      const filteredPosts = allCoreContent(
-        sortPosts(
-          allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(slug(tag)))
-        )
-      )
-      const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
-      for (let i = 1; i <= totalPages; i++) {
-        params.push({
-          tag: slug(tag),
-          page: i.toString(),
-        })
-      }
-    })
-
-    return params
-  } catch (error) {
-    console.error('Error generating static params:', error)
-    return []
-  }
+export async function generateMetadata(props: {
+  params: Promise<{ tag: string }>
+}): Promise<Metadata> {
+  const params = await props.params
+  const tag = decodeURI(params.tag)
+  return genPageMetadata({
+    title: tag,
+    description: `${siteMetadata.title} ${tag} tagged content`,
+    alternates: {
+      canonical: './',
+      types: {
+        'application/rss+xml': `${siteMetadata.siteUrl}/tags/${tag}/feed.xml`,
+      },
+    },
+  })
 }
 
-interface PageProps {
-  params: { tag: string; page: string }
+export const generateStaticParams = async () => {
+  const tagCounts = tagData as Record<string, number>
+  const tagKeys = Object.keys(tagCounts)
+  return tagKeys.map((tag) => ({
+    tag: encodeURI(tag),
+  }))
 }
 
-export default async function TagPage({ params }: PageProps) {
+export default async function TagPage(props: { params: Promise<{ tag: string }> }) {
+  const params = await props.params
   const tag = decodeURI(params.tag)
   const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
-  const pageNumber = parseInt(params.page)
   const filteredPosts = allCoreContent(
     sortPosts(allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(tag)))
   )
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
-
-  if (pageNumber <= 0 || pageNumber > totalPages || isNaN(pageNumber)) {
-    return notFound()
-  }
-
-  const initialDisplayPosts = filteredPosts.slice(
-    POSTS_PER_PAGE * (pageNumber - 1),
-    POSTS_PER_PAGE * pageNumber
-  )
+  const initialDisplayPosts = filteredPosts.slice(0, POSTS_PER_PAGE)
   const pagination = {
-    currentPage: pageNumber,
+    currentPage: 1,
     totalPages: totalPages,
   }
 

@@ -6,31 +6,14 @@ import { allBlogs } from 'contentlayer/generated'
 import tagData from 'app/tag-data.json'
 import { genPageMetadata } from 'app/seo'
 import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
 
 const POSTS_PER_PAGE = 5
 
-export const generateStaticParams = async () => {
-  const tagCounts = tagData as Record<string, number>
-
-  // Handle empty tag data gracefully
-  if (!tagCounts || Object.keys(tagCounts).length === 0) {
-    console.warn('No tag data found. Skipping static generation for tag pages.')
-    return []
-  }
-
-  return Object.keys(tagCounts).map((tag) => ({
-    tag: slug(tag),
-  }))
-}
-
-export async function generateMetadata({
-  params,
-}: {
+export async function generateMetadata(props: {
   params: Promise<{ tag: string }>
 }): Promise<Metadata> {
-  const resolvedParams = await params
-  const tag = decodeURI(resolvedParams.tag)
+  const params = await props.params
+  const tag = decodeURI(params.tag)
   return genPageMetadata({
     title: tag,
     description: `${siteMetadata.title} ${tag} tagged content`,
@@ -43,27 +26,26 @@ export async function generateMetadata({
   })
 }
 
-export default async function TagPage({ params }: { params: Promise<{ tag: string }> }) {
-  const resolvedParams = await params
-  const tag = decodeURI(resolvedParams.tag)
-  // Capitalize first letter and convert space to dash
+export const generateStaticParams = async () => {
+  const tagCounts = tagData as Record<string, number>
+  const tagKeys = Object.keys(tagCounts)
+  return tagKeys.map((tag) => ({
+    tag: encodeURI(tag),
+  }))
+}
+
+export default async function TagPage(props: { params: Promise<{ tag: string }> }) {
+  const params = await props.params
+  const tag = decodeURI(params.tag)
   const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
   const filteredPosts = allCoreContent(
     sortPosts(allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(tag)))
   )
-
-  if (filteredPosts.length === 0) {
-    return notFound()
-  }
-
-  const pageNumber = 1
-  const initialDisplayPosts = filteredPosts.slice(
-    POSTS_PER_PAGE * (pageNumber - 1),
-    POSTS_PER_PAGE * pageNumber
-  )
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
+  const initialDisplayPosts = filteredPosts.slice(0, POSTS_PER_PAGE)
   const pagination = {
-    currentPage: pageNumber,
-    totalPages: Math.ceil(filteredPosts.length / POSTS_PER_PAGE),
+    currentPage: 1,
+    totalPages: totalPages,
   }
 
   return (
