@@ -76,7 +76,11 @@ async function createTagCount(allBlogs) {
       })
     }
   })
-  writeFileSync('./app/tag-data.json', JSON.stringify(tagCount))
+
+  // Format JSON with proper spacing for better readability in git
+  const formattedJson = JSON.stringify(tagCount, null, 2)
+  writeFileSync('./app/tag-data.json', formattedJson)
+  console.log('Tag data generated with', Object.keys(tagCount).length, 'tags')
 }
 
 function createSearchIndex(allBlogs) {
