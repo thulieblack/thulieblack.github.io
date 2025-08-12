@@ -13,6 +13,12 @@ const POSTS_PER_PAGE = 5
 export const generateStaticParams = async () => {
   const tagCounts = tagData as Record<string, number>
 
+  // Handle empty tag data gracefully
+  if (!tagCounts || Object.keys(tagCounts).length === 0) {
+    console.warn('No tag data found. Skipping static generation for tag pages.')
+    return []
+  }
+
   return Object.keys(tagCounts).map((tag) => ({
     tag: slug(tag),
   }))

@@ -8,28 +8,39 @@ import { notFound } from 'next/navigation'
 const POSTS_PER_PAGE = 5
 
 export const generateStaticParams = async () => {
-  const tagCounts = tagData as Record<string, number>
-  const params: { tag: string; page: string }[] = []
+  try {
+    const tagCounts = tagData as Record<string, number>
+    const params: { tag: string; page: string }[] = []
 
-  Object.keys(tagCounts).forEach((tag) => {
-    const filteredPosts = allCoreContent(
-      sortPosts(
-        allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(slug(tag)))
-      )
-    )
-
-    const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
-
-    // Generate pages starting from page 2 (page 1 is handled by /tags/[tag])
-    for (let i = 2; i <= totalPages; i++) {
-      params.push({
-        tag: slug(tag),
-        page: i.toString(),
-      })
+    // Handle empty tag data gracefully
+    if (!tagCounts || Object.keys(tagCounts).length === 0) {
+      console.warn('No tag data found. Returning empty array.')
+      return []
     }
-  })
 
-  return params
+    Object.keys(tagCounts).forEach((tag) => {
+      const filteredPosts = allCoreContent(
+        sortPosts(
+          allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(slug(tag)))
+        )
+      )
+      const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
+
+      // Generate pages starting from page 2 (page 1 is handled by /tags/[tag])
+      for (let i = 2; i <= totalPages; i++) {
+        params.push({
+          tag: slug(tag),
+          page: i.toString(),
+        })
+      }
+    })
+
+    return params
+  } catch (error) {
+    console.error('Error generating static params:', error)
+    // Return empty array instead of throwing to prevent build failure
+    return []
+  }
 }
 
 export default async function TagPage({

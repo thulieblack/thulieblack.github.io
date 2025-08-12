@@ -80,13 +80,19 @@ async function createTagCount(allBlogs) {
 }
 
 function createSearchIndex(allBlogs) {
-  if (
-    siteMetadata?.search?.provider === 'kbar' &&
-    siteMetadata.search.kbarConfig.searchDocumentsPath
-  ) {
+  if (siteMetadata?.search?.provider === 'algolia' || siteMetadata.search?.provider === 'kbar') {
     writeFileSync(
-      `public/${path.basename(siteMetadata.search.kbarConfig.searchDocumentsPath)}`,
-      JSON.stringify(allCoreContent(sortPosts(allBlogs)))
+      `public/search.json`,
+      JSON.stringify(
+        allBlogs.map((post) => ({
+          title: post.title,
+          summary: post.summary,
+          content: post.body.raw,
+          objectID: post._id,
+          slug: post.slug,
+          tags: post.tags || [],
+        }))
+      )
     )
     console.log('Local search index generated...')
   }
@@ -180,7 +186,7 @@ export default makeSource({
   },
   onSuccess: async (importData) => {
     const { allBlogs } = await importData()
-    createTagCount(allBlogs)
+    await createTagCount(allBlogs)
     createSearchIndex(allBlogs)
   },
 })
