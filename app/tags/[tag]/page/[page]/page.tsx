@@ -24,7 +24,7 @@ export async function generateStaticParams() {
         )
       )
       const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
-      for (let i = 2; i <= totalPages; i++) {
+      for (let i = 1; i <= totalPages; i++) {
         params.push({
           tag: slug(tag),
           page: i.toString(),
@@ -39,15 +39,10 @@ export async function generateStaticParams() {
   }
 }
 
-export default async function TagPage({
-  params,
-}: {
-  params: Promise<{ tag: string; page: string }>
-}) {
-  const resolvedParams = await params
-  const tag = decodeURI(resolvedParams.tag)
+export default async function TagPage({ params }: { params: { tag: string; page: string } }) {
+  const tag = decodeURI(params.tag)
   const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
-  const pageNumber = parseInt(resolvedParams.page)
+  const pageNumber = parseInt(params.page)
   const filteredPosts = allCoreContent(
     sortPosts(allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(tag)))
   )
