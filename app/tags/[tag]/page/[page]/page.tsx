@@ -39,7 +39,11 @@ export async function generateStaticParams() {
   }
 }
 
-export default async function TagPage({ params }: { params: { tag: string; page: string } }) {
+interface TagPageProps {
+  params: { tag: string; page: string }
+}
+
+export default async function TagPage({ params }: TagPageProps) {
   const tag = decodeURI(params.tag)
   const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
   const pageNumber = parseInt(params.page)
