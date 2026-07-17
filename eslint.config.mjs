@@ -64,6 +64,10 @@ export default [
       'react/no-unescaped-entities': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-var-requires': 'off',
+      // `no-var-requires` was renamed to `no-require-imports` in a newer
+      // @typescript-eslint release; both are disabled since next.config.js
+      // and similar root-level configs are plain CommonJS by design.
+      '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
     },
   },

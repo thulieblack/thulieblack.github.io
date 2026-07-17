@@ -10,6 +10,8 @@
   --font-sans:
     var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  /* System serif stack for editorial headings (no next/font, no network fetch) */
+  --font-serif: Georgia, 'Times New Roman', ui-serif, serif;
 
   /* Colors: Primary is gold, gray is black */
   --color-primary-50: #fffbe6;
@@ -24,18 +26,21 @@
   --color-primary-900: #d9a100; /* darkest gold */
   --color-primary-950: #b38600;
 
-  /* Slate colors for backgrounds */
-  --color-gray-50: #f8fafc;
-  --color-gray-100: #f1f5f9;
-  --color-gray-200: #e2e8f0;
-  --color-gray-300: #cbd5e1;
-  --color-gray-400: #94a3b8;
-  --color-gray-500: #64748b;
-  --color-gray-600: #475569;
-  --color-gray-700: #334155;
-  --color-gray-800: #36454f; /* charcoal grey */
-  --color-gray-900: #2f3e46; /* darker charcoal grey */
-  --color-gray-950: #232b30; /* darkest charcoal grey */
+  /* Warm ink/paper neutrals — matches the homepage concept artifact's palette
+     (paper/ink tokens) instead of a cool slate scale. Retuning this one scale
+     cascades to every existing gray-based text, border, and background
+     utility site-wide without touching individual components. */
+  --color-gray-50: #f7f4ea; /* paper-raised (light) */
+  --color-gray-100: #f0ebdc;
+  --color-gray-200: #e3dcc8; /* hairline borders (light) */
+  --color-gray-300: #cabfa4; /* ink-soft (dark mode) */
+  --color-gray-400: #a89b7d; /* ink-soft/faint bridge (dark mode secondary text) */
+  --color-gray-500: #7d7259; /* ink-soft (light mode secondary text) */
+  --color-gray-600: #5c5340;
+  --color-gray-700: #423c2e; /* hairline borders (dark) */
+  --color-gray-800: #2a251a; /* card surface (dark) */
+  --color-gray-900: #1c1812; /* ink / page background (dark) */
+  --color-gray-950: #100d09; /* darkest ink */
 
   /* Line heights */
   --line-height-11: 2.75rem;
@@ -195,23 +200,192 @@ input:-webkit-autofill:focus {
   vertical-align: middle;
 }
 
-/* Profile card avatar animations */
-.avatar-hover-glow {
+/* Nav logo ambient glow (gold-only, sized for a nav-height crest) */
+.nav-logo-glow {
   position: relative;
 }
 
-.avatar-hover-glow::before {
+.nav-logo-glow::before {
   content: '';
   position: absolute;
-  inset: -2px;
-  background: linear-gradient(45deg, #fab005, #845ec2);
+  inset: -40%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--color-primary-500) 45%, transparent) 0%,
+    transparent 70%
+  );
   border-radius: 50%;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
   z-index: -1;
-  filter: blur(8px);
+  pointer-events: none;
+  animation: nav-logo-breathe 4s ease-in-out infinite;
 }
 
-.avatar-hover-glow:hover::before {
-  opacity: 0.7;
+.dark .nav-logo-glow::before {
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--color-primary-400) 65%, transparent) 0%,
+    transparent 70%
+  );
+}
+
+@keyframes nav-logo-breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-logo-glow::before {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
+/* Tag marquee */
+.marquee-track {
+  animation: marquee 60s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* Logo click confetti */
+.confetti-piece {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  transform: rotate(var(--angle));
+  animation: confetti-burst 0.7s ease-out forwards;
+}
+
+@keyframes confetti-burst {
+  0% {
+    transform: rotate(var(--angle)) translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(var(--angle)) translateY(-46px) scale(0.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti-piece {
+    animation: none;
+    display: none;
+  }
+}
+
+/* Playful emoji wiggle on hover */
+.emoji-wiggle {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.emoji-wiggle:hover {
+  animation: emoji-wiggle 0.5s ease-in-out;
+}
+
+@keyframes emoji-wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-15deg) scale(1.15);
+  }
+  75% {
+    transform: rotate(15deg) scale(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emoji-wiggle:hover {
+    animation: none;
+  }
+}
+
+/* About page avatar: glowing, spinning halo */
+.avatar-halo {
+  position: relative;
+  display: inline-flex;
+  isolation: isolate;
+}
+
+.avatar-halo::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  z-index: -1;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--color-primary-500),
+    #7fa6bd,
+    var(--color-primary-300),
+    var(--color-primary-700),
+    var(--color-primary-500)
+  );
+  animation: avatar-halo-spin 6s linear infinite;
+}
+
+.avatar-halo::after {
+  content: '';
+  position: absolute;
+  inset: -22px;
+  z-index: -2;
+  border-radius: 50%;
+  filter: blur(10px);
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--color-primary-500) 50%, transparent) 0%,
+    transparent 70%
+  );
+  animation: avatar-halo-pulse 3s ease-in-out infinite;
+}
+
+@keyframes avatar-halo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes avatar-halo-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-halo::before,
+  .avatar-halo::after {
+    animation: none;
+  }
 }

@@ -2,19 +2,25 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
+import Hero from '@/components/home-page/Hero'
 import ProfileCard from '@/components/home-page/ProfileCard'
+import TagMarquee from '@/components/home-page/TagMarquee'
 
 const MAX_DISPLAY = 5
 
 export default function Home({ posts }) {
   return (
     <>
+      <Hero />
+
       {/* Text-only profile card */}
       <ProfileCard />
 
+      <TagMarquee />
+
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
+          <h1 className="font-serif text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
             Latest
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
@@ -52,7 +58,7 @@ export default function Home({ posts }) {
                             ))}
                           </div>
                         </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                        <div className="prose line-clamp-3 max-w-none [mask-image:linear-gradient(to_bottom,black_75%,transparent_100%)] text-gray-500 dark:text-gray-400">
                           {summary}
                         </div>
                       </div>

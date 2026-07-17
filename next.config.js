@@ -92,7 +92,26 @@ module.exports = () => {
     webpack: (config, options) => {
       config.module.rules.push({
         test: /\.svg$/,
-        use: ['@svgr/webpack'],
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              // SVGO's removeViewBox optimization strips `viewBox` whenever it
+              // exactly matches width/height, on the assumption the SVG is never
+              // resized. That breaks any SVG icon component resized via CSS
+              // (e.g. <Logo className="h-12 w-12" />) — its content clips to a
+              // corner instead of scaling. Keep viewBox so resizing always works.
+              svgoConfig: {
+                plugins: [
+                  {
+                    name: 'preset-default',
+                    params: { overrides: { removeViewBox: false } },
+                  },
+                ],
+              },
+            },
+          },
+        ],
       })
 
       return config
