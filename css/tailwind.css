@@ -350,36 +350,35 @@ input:-webkit-autofill:focus {
   animation: avatar-halo-spin 6s linear infinite;
 }
 
+/* Same recipe as .nav-logo-glow — proportional size, same color-mix
+   formula, same breathing animation — so the two glows read as one
+   family instead of competing effects. */
 .avatar-halo::after {
   content: '';
   position: absolute;
-  inset: -22px;
+  inset: -40%;
   z-index: -2;
   border-radius: 50%;
-  filter: blur(10px);
+  pointer-events: none;
   background: radial-gradient(
     circle,
-    color-mix(in oklab, var(--color-primary-500) 50%, transparent) 0%,
+    color-mix(in oklab, var(--color-primary-500) 45%, transparent) 0%,
     transparent 70%
   );
-  animation: avatar-halo-pulse 3s ease-in-out infinite;
+  animation: nav-logo-breathe 4s ease-in-out infinite;
+}
+
+.dark .avatar-halo::after {
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--color-primary-400) 65%, transparent) 0%,
+    transparent 70%
+  );
 }
 
 @keyframes avatar-halo-spin {
   to {
     transform: rotate(360deg);
-  }
-}
-
-@keyframes avatar-halo-pulse {
-  0%,
-  100% {
-    opacity: 0.5;
-    transform: scale(0.94);
-  }
-  50% {
-    opacity: 0.95;
-    transform: scale(1.08);
   }
 }
 
