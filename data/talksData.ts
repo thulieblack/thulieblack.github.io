@@ -12,6 +12,16 @@ export interface Talk {
 // and add an entry below referencing it as imgSrc: '/static/images/talks/your-file-name.png'
 const talksData: Talk[] = [
   {
+    title: 'From Ingredients to Output: The AsyncAPI Generator 101',
+    event: 'API Conf Lagos',
+    date: '2025-07-18',
+    location: 'Lagos, Nigeria',
+    description:
+      "Curious about creating documentation, code, or apps from your AsyncAPI files? Join me for a beginner-friendly walkthrough of the AsyncAPI Generator, which transforms AsyncAPI documents into functional outputs using customizable templates. We'll cover the basics of AsyncAPI and its importance in event-driven architectures. Then, explore the Generator, including its requirements (an AsyncAPI document and a template) and its output capabilities. Using simple analogies, we'll explain how templates serve as recipes and AsyncAPI documents as ingredients. We'll break down how templates are built, from simple components to advanced React-like logic, and see how they use the data in AsyncAPI files to produce meaningful results from markdown documentation to server code.",
+    imgSrc: '/static/images/talks/lagos.jpg',
+    href: 'https://youtu.be/J38sUCOTQTw?si=sF1KALvslfP6wN7y',
+  },
+  {
     title: 'Open Source, Community & Strategic Volunteering: Your Hidden Technical Resume',
     event: 'Techrity TMP 6.0 Webinar Series',
     date: '2026-07-16',

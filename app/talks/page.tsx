@@ -4,6 +4,10 @@ import { genPageMetadata } from 'app/seo'
 
 export const metadata = genPageMetadata({ title: 'Talks' })
 
+const sortedTalks = [...talksData].sort(
+  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+)
+
 export default function TalksPage() {
   return (
     <>
@@ -17,7 +21,7 @@ export default function TalksPage() {
           </p>
         </div>
         <div className="py-12">
-          <TalksGrid talks={talksData} />
+          <TalksGrid talks={sortedTalks} />
         </div>
       </div>
     </>
