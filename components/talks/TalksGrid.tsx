@@ -84,13 +84,19 @@ const TalksGrid = ({ talks }: { talks: Talk[] }) => {
             className="group overflow-hidden rounded-lg border-2 border-gray-200/60 bg-white text-left transition-all duration-300 ease-in-out hover:shadow-xl dark:border-gray-700/60 dark:bg-gray-800"
           >
             <div className="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-900">
-              <Image
-                src={talk.imgSrc}
-                alt={talk.title}
-                width={640}
-                height={360}
-                className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-              />
+              {talk.imgSrc ? (
+                <Image
+                  src={talk.imgSrc}
+                  alt={talk.title}
+                  width={640}
+                  height={360}
+                  className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                />
+              ) : (
+                <div className="from-primary-500 to-primary-700 flex h-full w-full items-center justify-center bg-gradient-to-br p-6 text-center font-serif text-xl font-bold text-white transition-transform duration-500 ease-out group-hover:scale-110">
+                  {talk.event}
+                </div>
+              )}
             </div>
             <div className="p-5">
               <p className="text-primary-500 dark:text-primary-400 text-xs font-semibold tracking-wide uppercase">
@@ -125,14 +131,16 @@ const TalksGrid = ({ talks }: { talks: Talk[] }) => {
             >
               &times;
             </button>
-            <Image
-              src={active.imgSrc}
-              alt={active.title}
-              width={800}
-              height={800}
-              className="max-h-[50vh] w-full bg-gray-100 object-contain dark:bg-gray-900"
-            />
-            <div className="p-6">
+            {active.imgSrc && (
+              <Image
+                src={active.imgSrc}
+                alt={active.title}
+                width={800}
+                height={800}
+                className="max-h-[50vh] w-full bg-gray-100 object-contain dark:bg-gray-900"
+              />
+            )}
+            <div className={active.imgSrc ? 'p-6' : 'p-6 pr-14'}>
               <p className="text-primary-500 dark:text-primary-400 text-xs font-semibold tracking-wide uppercase">
                 {active.event}
               </p>
@@ -142,7 +150,9 @@ const TalksGrid = ({ talks }: { talks: Talk[] }) => {
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 {formatTalkMeta(active)}
               </p>
-              <p className="mt-4 text-gray-700 dark:text-gray-300">{active.description}</p>
+              <p className="mt-4 whitespace-pre-line text-gray-700 dark:text-gray-300">
+                {active.description}
+              </p>
               {active.href && (
                 <Link
                   href={active.href}

@@ -4,13 +4,33 @@ export interface Talk {
   date: string // ISO date, e.g. '2026-03-14'
   location?: string
   description: string
-  imgSrc: string
+  imgSrc?: string // optional; cards without one show the event name instead
   href?: string // link to slides, recording, or the event page
 }
 
 // To add another talk: drop a banner image in public/static/images/talks/
 // and add an entry below referencing it as imgSrc: '/static/images/talks/your-file-name.png'
 const talksData: Talk[] = [
+  {
+    title: 'Designing Governance for Sustainable Open Standards',
+    event: 'AsyncAPI Conference at FOST London',
+    date: '2026-10-01',
+    location: 'London, UK',
+    description:
+      "I will share what we've learned in the AsyncAPI community and talk about five key pillars for sustainable governance: transparency, shared ownership, succession, participation, and accountability.",
+    imgSrc: '/static/images/talks/fost-london.jpg',
+    href: 'https://cfp.asyncapi.com/london-2026/talk/YZJ3US/',
+  },
+  {
+    title: 'Establishing a Documentation Process in an Open Source Community',
+    event: 'Open Source Summit Europe 2026',
+    date: '2026-10-08',
+    location: 'Prague, Czechia',
+    description:
+      'Many communities reach a point where knowledge has naturally concentrated in the hands of a few dedicated people. It happens organically. Someone steps up, carries the weight, and keeps things moving. But without a process to capture and distribute that knowledge, the community becomes fragile without ever meaning to. Contributors arrive eager and leave quietly. Decisions get made but are never recorded. Onboarding repeats itself because nothing was ever written down.\n\nThis talk is about what happens when a community decides to change that. Drawing on experience as a maintainer and community manager, I will walk through the journey of building a documentation process from the ground up, not by writing more docs, but by shifting how the community thinks about knowledge itself. From auditing where knowledge lived, to creating structures for knowledge capture and decision documentation, forming a working group that distributed ownership, and building triage and mentorship pathways that made contribution genuinely accessible.',
+    imgSrc: '/static/images/talks/oss-prague.jpg',
+    href: 'https://osselceu2026.sched.com/event/2RabH/establishing-a-documentation-process-in-an-open-source-community-v-thulisile-sibanda-asyncapi-initiative',
+  },
   {
     title: 'From Ingredients to Output: The AsyncAPI Generator 101',
     event: 'API Conf Lagos',
