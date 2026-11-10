@@ -15,6 +15,7 @@ const siteMetadata = {
   linkedin: 'https://www.linkedin.com/in/v-thulisile-sibanda',
   medium: 'https://thulieblack.medium.com',
   bluesky: 'https://bsky.app/profile/thulieblack.bsky.social',
+  youtube: 'https://www.youtube.com/@thulieblack',
   locale: 'en-US',
   // set to true if you want a navbar fixed to the top
   stickyNav: true,
