@@ -3,7 +3,8 @@ const siteMetadata = {
   title: 'thulieblack',
   author: 'Thulisile Sibanda',
   headerTitle: '',
-  description: 'From My Blog and My Thoughts 😉',
+  description:
+    'Thulisile Sibanda: Senior Community Manager at AsyncAPI Initiative, TSC member, conference organizer, and open source speaker.',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://thulieblack.github.io',
