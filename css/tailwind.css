@@ -388,3 +388,106 @@ input:-webkit-autofill:focus {
     animation: none;
   }
 }
+
+/* Scroll reveal (components/Reveal.tsx) */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Typewriter caret (components/home-page/RotatingHat.tsx) */
+.typewriter-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: currentColor;
+  animation: caret-blink 1s steps(1) infinite;
+}
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .typewriter-caret {
+    animation: none;
+  }
+}
+
+/* Playful card hover: lift with a gold glow */
+.fun-card {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+.fun-card:hover {
+  transform: translateY(-6px) rotate(-0.4deg);
+  border-color: var(--color-primary-500);
+  box-shadow: 0 14px 30px -12px color-mix(in oklab, var(--color-primary-500) 55%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fun-card:hover {
+    transform: none;
+  }
+}
+
+/* About page: portrait tilt + wave (components/about/PortraitTilt.tsx) */
+.portrait-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-out;
+  will-change: transform;
+}
+.portrait-wave {
+  opacity: 0;
+  transform: scale(0.4) rotate(0deg);
+  transform-origin: 70% 70%;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+.portrait-wave.is-waving {
+  opacity: 1;
+  transform: scale(1);
+  animation: wave-hand 1.2s ease-in-out infinite;
+}
+@keyframes wave-hand {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0deg);
+  }
+  10%,
+  30% {
+    transform: rotate(16deg);
+  }
+  20%,
+  40% {
+    transform: rotate(-10deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait-tilt {
+    transform: none !important;
+  }
+  .portrait-wave.is-waving {
+    animation: none;
+  }
+}

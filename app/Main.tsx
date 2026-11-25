@@ -5,6 +5,7 @@ import { formatDate } from 'pliny/utils/formatDate'
 import Hero from '@/components/home-page/Hero'
 import ProfileCard from '@/components/home-page/ProfileCard'
 import TagMarquee from '@/components/home-page/TagMarquee'
+import OpenSourceHighlights from '@/components/home-page/OpenSourceHighlights'
 
 const MAX_DISPLAY = 5
 
@@ -18,13 +19,15 @@ export default function Home({ posts }) {
 
       <TagMarquee />
 
+      <OpenSourceHighlights />
+
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
           <h1 className="font-serif text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
-            Latest
+            Latest Writing
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            {siteMetadata.description}
+            Reflections on open source communities, governance, maintainership, and events.
           </p>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
