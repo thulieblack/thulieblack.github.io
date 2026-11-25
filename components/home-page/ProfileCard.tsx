@@ -9,7 +9,7 @@ const ProfileCard = () => {
     <div className="mb-8">
       <div className="relative overflow-hidden rounded-lg border border-gray-200 bg-white p-8 transition-all duration-300 ease-in-out hover:shadow-lg dark:border-gray-700 dark:bg-gray-800">
         {/* A ghostly, full-size version of my photo on the left side of the card — just for fun, not meant to be too visible */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-0 opacity-[0.16] grayscale dark:opacity-[0.12]">
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-0 opacity-[0.16] grayscale dark:opacity-[0.30]">
           <Image
             src="/static/images/avatar.png"
             alt=""
