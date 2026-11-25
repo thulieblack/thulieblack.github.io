@@ -1,12 +1,21 @@
 import Image from './Image'
 import Link from './Link'
 
-const Card = ({ title, description, imgSrc, href }) => (
+interface CardProps {
+  title: string
+  description: string
+  imgSrc?: string
+  href?: string
+  role?: string
+  contributions?: string[]
+}
+
+const Card = ({ title, description, imgSrc, href, role, contributions }: CardProps) => (
   <div className="md max-w-[544px] p-4 md:w-1/2">
     <div
       className={`${
         imgSrc && 'h-full'
-      } overflow-hidden rounded-lg border-2 border-gray-200/60 bg-white transition-all duration-300 ease-in-out hover:shadow-lg dark:border-gray-700/60 dark:bg-gray-800`}
+      } fun-card overflow-hidden rounded-lg border-2 border-gray-200/60 bg-white dark:border-gray-700/60 dark:bg-gray-800`}
     >
       {imgSrc &&
         (href ? (
@@ -29,6 +38,11 @@ const Card = ({ title, description, imgSrc, href }) => (
           />
         ))}
       <div className="p-6">
+        {role && (
+          <p className="text-primary-500 dark:text-primary-400 mb-2 text-xs font-semibold tracking-wide uppercase">
+            {role}
+          </p>
+        )}
         <h2 className="mb-3 text-2xl leading-8 font-bold tracking-tight">
           {href ? (
             <Link href={href} aria-label={`Link to ${title}`}>
@@ -39,6 +53,13 @@ const Card = ({ title, description, imgSrc, href }) => (
           )}
         </h2>
         <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">{description}</p>
+        {contributions && contributions.length > 0 && (
+          <ul className="mb-4 list-disc space-y-1 pl-5 text-sm text-gray-600 dark:text-gray-300">
+            {contributions.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+        )}
         {href && (
           <Link
             href={href}
