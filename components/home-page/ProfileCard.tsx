@@ -1,7 +1,8 @@
-// filepath: c:\Users\siban\Local Repos\tailwind-nextjs-starter-blog\components\home-page\ProfileCard.tsx
 'use client'
 
 import Image from '@/components/Image'
+import Link from '@/components/Link'
+import RotatingHat from './RotatingHat'
 
 const ProfileCard = () => {
   return (
@@ -17,7 +18,6 @@ const ProfileCard = () => {
             className="h-full w-auto object-contain"
           />
         </div>
-        {/* Text Content Only */}
         <div className="relative z-10 text-center">
           <div className="space-y-6">
             {/* Greeting */}
@@ -30,18 +30,48 @@ const ProfileCard = () => {
               </p>
             </div>
 
+            <RotatingHat />
+
             {/* Short Description */}
-            <p className="text-lg leading-relaxed text-gray-700 md:text-xl dark:text-gray-300">
-              I am an open-source fanatic, a community builder, a technical writer, and a Python
-              programmer. Here, you will find my articles and what I have done and am currently
-              working on. Please feel free to reach out to me
-              <span className="emoji-wiggle">💜</span>!
-              <br />
-              <span className="font-bold">
+            <div className="space-y-4 text-lg leading-relaxed text-gray-700 md:text-xl dark:text-gray-300">
+              <p>
+                I build and support Open Source programs and communities, the kind where
+                contributors feel welcome, documentation makes sense, and people want to stick
+                around.
+              </p>
+              <p>
+                I wear many hats: Maintainer, Contributor, Program Manager, Documentation Writer,
+                Community Advocate, and occasional data person. What ties it all together? Helping
+                people do their best work in Open Source. Feel free to reach out{' '}
+                <span className="emoji-wiggle">💜</span>!
+              </p>
+              <p className="font-bold">
                 <span className="emoji-wiggle">👑</span>Yēšūaʿ (Yeshua) IS LORD!
                 <span className="emoji-wiggle">👑</span>
-              </span>
-            </p>
+              </p>
+            </div>
+
+            {/* Calls to action */}
+            <div className="flex flex-wrap justify-center gap-3">
+              <Link
+                href="/talks"
+                className="hover:border-primary-500 hover:text-primary-500 rounded-full border border-gray-300 px-5 py-2 text-sm font-semibold text-gray-700 transition-colors dark:border-gray-600 dark:text-gray-200"
+              >
+                Conference Talks
+              </Link>
+              <Link
+                href="/projects"
+                className="hover:border-primary-500 hover:text-primary-500 rounded-full border border-gray-300 px-5 py-2 text-sm font-semibold text-gray-700 transition-colors dark:border-gray-600 dark:text-gray-200"
+              >
+                Open Source
+              </Link>
+              <Link
+                href="/about"
+                className="hover:border-primary-500 hover:text-primary-500 rounded-full border border-gray-300 px-5 py-2 text-sm font-semibold text-gray-700 transition-colors dark:border-gray-600 dark:text-gray-200"
+              >
+                About Me
+              </Link>
+            </div>
           </div>
         </div>
       </div>
