@@ -7,7 +7,7 @@ import PortraitTilt from '@/components/about/PortraitTilt'
 
 // The About page uses its own portrait; `avatar` (frontmatter) stays the
 // small photo used elsewhere on the site, such as on blog posts.
-const ABOUT_PORTRAIT = '/static/images/about-portrait.jpeg'
+const ABOUT_PORTRAIT = '/static/images/about-portrait.jpg'
 
 interface Props {
   children: ReactNode
