@@ -26,8 +26,11 @@ const journeyData: Role[] = [
     period: 'Mar 2025 – Present',
     points: [
       'Develop the community strategy for Open Source in Energy Access, engaging practitioners, researchers, and developers across regions',
-      'Build programs that connect technical contributors with energy-access practitioners and projects',
-      'Run community engagement across GitHub and Discord, including recurring virtual community programs',
+      'Grew the Discord community by 265% from 200 members, through recurring virtual community programs',
+      'Built and launched the OSEA Community website (osea-community.org) as the home for the community',
+      'Created and lead the OSEA Ambassador Program, connecting technical contributors with energy-access practitioners and projects',
+      'Wrote the community Code of Conduct and Contribution Guide',
+      'Own community content, including blogs on the MicroPowerManager roadmap and community showcases',
     ],
   },
   {

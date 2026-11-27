@@ -70,8 +70,8 @@ export default function OpenSourceWork() {
             Contributions
           </h2>
           <p className="mb-8 text-gray-500 dark:text-gray-400">
-            Highlights from my work across docs, code generation, and MQTT tooling, with links to
-            the live pages and pull requests.
+            Highlights from my work across docs, code generation, MQTT tooling, and community
+            building, with links to the live pages and pull requests.
           </p>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {contributionsData.map((group, i) => (

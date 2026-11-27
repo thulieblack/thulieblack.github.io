@@ -18,6 +18,39 @@ export interface ContributionGroup {
 // Highlights of my merged pull requests. To add one, append to the relevant group's items.
 const contributionsData: ContributionGroup[] = [
   {
+    title: 'Open Source in Energy Access (EnAccess)',
+    repo: 'EnAccess',
+    repoHref: 'https://github.com/EnAccess',
+    summary:
+      'Built the OSEA community from the ground up: launched its website, wrote its governance docs, created the Ambassador Program, and grew the Discord community by 265% from 200 members.',
+    links: [
+      { label: 'OSEA Community', href: 'https://osea-community.org/' },
+      { label: 'Ambassadors', href: 'https://osea-community.org/ambassadors/' },
+    ],
+    items: [
+      {
+        label: 'Built and launched the OSEA Community website',
+        href: 'https://osea-community.org/',
+      },
+      {
+        label: 'Wrote the Code of Conduct and Contribution Guide',
+        href: 'https://github.com/EnAccess/enaccess-repo-tf/pull/1',
+      },
+      {
+        label: 'Created and lead the OSEA Ambassador Program',
+        href: 'https://osea-community.org/ambassadors/',
+      },
+      {
+        label: 'Blog: MicroPowerManager roadmap for off-grid energy',
+        href: 'https://enaccess.org/micro-power-manager-roadmap-off-grid-energy/',
+      },
+      {
+        label: 'Blog: Community showcase with Aaron Tushabe',
+        href: 'https://enaccess.org/open-source-energy-access-community-showcase-with-aaron-tushabe/',
+      },
+    ],
+  },
+  {
     title: 'AsyncAPI Documentation',
     repo: 'asyncapi/website',
     repoHref: 'https://github.com/asyncapi/website',
